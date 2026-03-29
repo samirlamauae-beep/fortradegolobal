@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fourtrade Global Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #0B1F45;
+    --navy-deep: #071530;
+    --navy-mid: #1A3568;
+    --gold: #C49A0A;
+    --gold-warm: #E8B824;
+    --gold-pale: #F5E199;
+    --parchment: #F8F7F3;
+    --steel: #4A5878;
+    --text-light: #8A96B0;
+    --white: #ffffff;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--navy-deep);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 60px;
+    border-bottom: 0.5px solid rgba(196,154,10,0.15);
+    background: rgba(7,21,48,0.92);
+    backdrop-filter: blur(12px);
+    transition: padding 0.3s;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+  .nav-logo-icon { width: 36px; height: 36px; }
+  .nav-wordmark { display: flex; flex-direction: column; gap: 1px; }
+  .nav-wordmark span:first-child { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 600; color: var(--white); letter-spacing: 2px; line-height: 1; }
+  .nav-wordmark span:last-child { font-size: 8px; letter-spacing: 3px; color: var(--gold); font-weight: 400; }
+  .nav-links { display: flex; gap: 36px; align-items: center; }
+  .nav-links a { color: var(--text-light); text-decoration: none; font-size: 13px; font-weight: 400; letter-spacing: 0.5px; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    background: transparent; border: 0.5px solid var(--gold); color: var(--gold);
+    padding: 9px 22px; font-size: 12px; letter-spacing: 1.5px; font-family: 'Outfit', sans-serif;
+    cursor: pointer; transition: all 0.25s; text-decoration: none; font-weight: 400;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--navy-deep); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 60px 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image:
+      linear-gradient(rgba(196,154,10,1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(196,154,10,1) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-glow {
+    position: absolute; top: -200px; right: -200px;
+    width: 700px; height: 700px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,154,10,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; max-width: 700px; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 11px; letter-spacing: 3px; color: var(--gold); font-weight: 400;
+    margin-bottom: 28px;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block; width: 32px; height: 0.5px; background: var(--gold);
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 7vw, 80px);
+    font-weight: 500; line-height: 1.08; letter-spacing: -0.5px;
+    color: var(--white); margin-bottom: 12px;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-rule { width: 60px; height: 1px; background: var(--gold); margin: 28px 0; }
+  .hero p {
+    font-size: 16px; line-height: 1.75; color: var(--text-light);
+    font-weight: 300; max-width: 520px; margin-bottom: 44px;
+  }
+  .hero-btns { display: flex; gap: 16px; align-items: center; }
+  .btn-primary {
+    background: var(--gold); color: var(--navy-deep);
+    padding: 14px 32px; font-size: 13px; letter-spacing: 1.5px;
+    font-family: 'Outfit', sans-serif; font-weight: 500;
+    border: none; cursor: pointer; text-decoration: none; display: inline-block;
+    transition: all 0.25s;
+  }
+  .btn-primary:hover { background: var(--gold-warm); transform: translateY(-1px); }
+  .btn-ghost {
+    color: var(--white); font-size: 13px; letter-spacing: 0.5px;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    font-weight: 300; transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--gold); }
+  .btn-ghost::after { content: '→'; transition: transform 0.2s; }
+  .btn-ghost:hover::after { transform: translateX(4px); }
+
+  .hero-visual {
+    position: absolute; right: 60px; top: 50%; transform: translateY(-50%);
+    opacity: 0.12;
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    border-top: 0.5px solid rgba(196,154,10,0.2);
+    border-bottom: 0.5px solid rgba(196,154,10,0.2);
+    background: rgba(26,53,104,0.2);
+    display: grid; grid-template-columns: repeat(4,1fr);
+  }
+  .stat-item {
+    padding: 32px 40px; text-align: center;
+    border-right: 0.5px solid rgba(196,154,10,0.1);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px; font-weight: 600; color: var(--gold); line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-lbl { font-size: 11px; letter-spacing: 2px; color: var(--text-light); font-weight: 400; }
+
+  /* ── SECTIONS ── */
+  section { padding: 100px 60px; }
+  .section-eyebrow {
+    font-size: 10px; letter-spacing: 3.5px; color: var(--gold);
+    font-weight: 400; margin-bottom: 16px; display: flex; align-items: center; gap: 12px;
+  }
+  .section-eyebrow::before { content: ''; display: block; width: 24px; height: 0.5px; background: var(--gold); }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4vw, 50px); font-weight: 500; line-height: 1.15;
+    color: var(--white); margin-bottom: 20px;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-sub { font-size: 15px; color: var(--text-light); font-weight: 300; line-height: 1.7; max-width: 520px; }
+
+  /* ── ABOUT ── */
+  .about { background: var(--navy); }
+  .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .about-left {}
+  .about-right p { font-size: 15px; color: var(--text-light); line-height: 1.8; font-weight: 300; margin-bottom: 20px; }
+  .about-values { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 36px; background: rgba(196,154,10,0.1); }
+  .value-item { padding: 20px; background: var(--navy); }
+  .value-item .v-title { font-size: 12px; font-weight: 500; color: var(--white); letter-spacing: 0.5px; margin-bottom: 4px; }
+  .value-item .v-desc { font-size: 12px; color: var(--text-light); font-weight: 300; }
+  .gold-line { width: 100%; height: 0.5px; background: var(--gold); opacity: 0.3; margin: 32px 0; }
+
+  /* ── SERVICES ── */
+  .services { background: var(--navy-deep); }
+  .services-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(196,154,10,0.1); }
+  .service-card {
+    background: var(--navy-deep); padding: 44px 36px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s; position: relative; overflow: hidden;
+    cursor: default;
+  }
+  .service-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--gold); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .service-card:hover::after { transform: scaleX(1); }
+  .service-card:hover { background: rgba(26,53,104,0.4); }
+  .service-icon { width: 40px; height: 40px; margin-bottom: 28px; }
+  .service-num { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--gold); opacity: 0.6; margin-bottom: 14px; }
+  .service-title { font-size: 17px; font-weight: 500; color: var(--white); margin-bottom: 14px; letter-spacing: 0.2px; }
+  .service-desc { font-size: 13px; color: var(--text-light); line-height: 1.75; font-weight: 300; }
+  .service-link { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gold); margin-top: 24px; opacity: 0; transition: opacity 0.3s; }
+  .service-card:hover .service-link { opacity: 1; }
+
+  /* ── WHY US ── */
+  .why { background: var(--navy); }
+  .why-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .why-points { display: flex; flex-direction: column; gap: 0; }
+  .why-point {
+    display: flex; gap: 24px; padding: 28px 0;
+    border-bottom: 0.5px solid rgba(196,154,10,0.1);
+  }
+  .why-point:first-child { border-top: 0.5px solid rgba(196,154,10,0.1); }
+  .why-point-num { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold); opacity: 0.4; line-height: 1; flex-shrink: 0; width: 36px; }
+  .why-point-body h4 { font-size: 15px; font-weight: 500; color: var(--white); margin-bottom: 6px; }
+  .why-point-body p { font-size: 13px; color: var(--text-light); line-height: 1.7; font-weight: 300; }
+  .why-visual {
+    background: rgba(196,154,10,0.04); border: 0.5px solid rgba(196,154,10,0.15);
+    padding: 48px; display: flex; flex-direction: column; gap: 32px;
+  }
+  .why-quote {
+    font-family: 'Cormorant Garamond', serif; font-size: 24px; font-style: italic;
+    color: var(--white); line-height: 1.5; font-weight: 400;
+  }
+  .why-quote-attr { font-size: 12px; color: var(--gold); letter-spacing: 1.5px; font-weight: 400; }
+
+  /* ── PROCESS ── */
+  .process { background: var(--navy-deep); }
+  .process-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; margin-top: 60px; position: relative; }
+  .process-steps::before {
+    content: ''; position: absolute; top: 20px; left: 10%; right: 10%; height: 0.5px;
+    background: rgba(196,154,10,0.2);
+  }
+  .process-step { padding: 0 24px; }
+  .step-dot {
+    width: 40px; height: 40px; border: 0.5px solid var(--gold); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--gold);
+    margin-bottom: 28px; background: var(--navy-deep); position: relative; z-index: 1;
+  }
+  .step-title { font-size: 15px; font-weight: 500; color: var(--white); margin-bottom: 10px; }
+  .step-desc { font-size: 13px; color: var(--text-light); line-height: 1.7; font-weight: 300; }
+
+  /* ── CONTACT ── */
+  .contact { background: var(--navy); }
+  .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+  .contact-info { display: flex; flex-direction: column; gap: 32px; }
+  .contact-item {}
+  .contact-item-label { font-size: 10px; letter-spacing: 2.5px; color: var(--gold); margin-bottom: 6px; }
+  .contact-item-value { font-size: 15px; color: var(--white); font-weight: 300; }
+  .contact-form { display: flex; flex-direction: column; gap: 16px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label { font-size: 10px; letter-spacing: 2px; color: var(--text-light); }
+  .form-group input, .form-group textarea, .form-group select {
+    background: rgba(255,255,255,0.04); border: 0.5px solid rgba(196,154,10,0.2);
+    color: var(--white); padding: 12px 16px; font-family: 'Outfit', sans-serif;
+    font-size: 14px; font-weight: 300; outline: none; transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: var(--gold);
+  }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .form-group select option { background: var(--navy); }
+  .submit-btn {
+    background: var(--gold); color: var(--navy-deep); border: none;
+    padding: 14px 32px; font-size: 12px; letter-spacing: 2px; font-family: 'Outfit', sans-serif;
+    font-weight: 500; cursor: pointer; align-self: flex-start; transition: all 0.25s;
+  }
+  .submit-btn:hover { background: var(--gold-warm); transform: translateY(-1px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy-deep);
+    border-top: 0.5px solid rgba(196,154,10,0.15);
+    padding: 48px 60px 32px;
+  }
+  .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
+  .footer-brand p { font-size: 13px; color: var(--text-light); line-height: 1.7; font-weight: 300; margin-top: 16px; max-width: 260px; }
+  .footer-col h5 { font-size: 11px; letter-spacing: 2px; color: var(--gold); margin-bottom: 18px; font-weight: 400; }
+  .footer-col a { display: block; font-size: 13px; color: var(--text-light); text-decoration: none; margin-bottom: 10px; font-weight: 300; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--white); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 0.5px solid rgba(255,255,255,0.06); padding-top: 24px; }
+  .footer-bottom p { font-size: 12px; color: var(--text-light); font-weight: 300; }
+  .footer-tagline { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-style: italic; color: var(--gold); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-content > * { animation: fadeUp 0.7s ease both; }
+  .hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero-content > *:nth-child(2) { animation-delay: 0.2s; }
+  .hero-content > *:nth-child(3) { animation-delay: 0.3s; }
+  .hero-content > *:nth-child(4) { animation-delay: 0.35s; }
+  .hero-content > *:nth-child(5) { animation-delay: 0.4s; }
+  .hero-content > *:nth-child(6) { animation-delay: 0.45s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    section { padding: 64px 24px; }
+    .hero { padding: 100px 24px 60px; }
+    .hero-visual { display: none; }
+    .stats-bar { grid-template-columns: repeat(2,1fr); }
+    .about-inner, .why-inner, .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .services-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .process-steps::before { display: none; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <svg class="nav-logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="32" height="32" rx="2" stroke="#C49A0A" stroke-width="0.8"/>
+      <line x1="2" y1="18" x2="34" y2="18" stroke="#C49A0A" stroke-width="0.6"/>
+      <line x1="18" y1="2" x2="18" y2="34" stroke="#C49A0A" stroke-width="0.6"/>
+      <ellipse cx="18" cy="18" rx="9" ry="16" stroke="#C49A0A" stroke-width="0.9"/>
+      <path d="M5 11 Q18 15 31 11" fill="none" stroke="#C49A0A" stroke-width="0.6"/>
+      <path d="M5 25 Q18 21 31 25" fill="none" stroke="#C49A0A" stroke-width="0.6"/>
+      <circle cx="18" cy="18" r="2" fill="#C49A0A"/>
+      <path d="M18 15.5 L21 12.5 L25 12.5" fill="none" stroke="#E8B824" stroke-width="1.2" stroke-linecap="round"/>
+      <polygon points="25,10.5 28,12.5 25,14.5" fill="#E8B824"/>
+    </svg>
+    <div class="nav-wordmark">
+      <span>FOURTRADE</span>
+      <span>GLOBAL SOLUTIONS</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#why">Why Us</a>
+    <a href="#process">Process</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a class="nav-cta" href="#contact">GET IN TOUCH</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">CONSULTING & BUSINESS SERVICES</div>
+    <h1>
+      Strategic counsel<br>for a <em>complex</em><br>world.
+    </h1>
+    <div class="hero-rule"></div>
+    <p>Fourtrade Global Solutions empowers organizations to navigate complexity, build capacity, and achieve sustainable outcomes — with clarity, confidence, and trusted expertise.</p>
+    <div class="hero-btns">
+      <a href="#services" class="btn-primary">OUR SERVICES</a>
+      <a href="#contact" class="btn-ghost">Schedule a consultation</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <svg width="420" height="420" viewBox="0 0 420 420" fill="none">
+      <circle cx="210" cy="210" r="200" stroke="#C49A0A" stroke-width="0.5"/>
+      <ellipse cx="210" cy="210" rx="90" ry="200" stroke="#C49A0A" stroke-width="0.5"/>
+      <line x1="10" y1="210" x2="410" y2="210" stroke="#C49A0A" stroke-width="0.5"/>
+      <line x1="210" y1="10" x2="210" y2="410" stroke="#C49A0A" stroke-width="0.5"/>
+      <path d="M40 150 Q210 175 380 150" fill="none" stroke="#C49A0A" stroke-width="0.5"/>
+      <path d="M40 270 Q210 245 380 270" fill="none" stroke="#C49A0A" stroke-width="0.5"/>
+      <circle cx="210" cy="210" r="6" fill="#C49A0A"/>
+    </svg>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num">12+</div>
+    <div class="stat-lbl">YEARS EXPERIENCE</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">200+</div>
+    <div class="stat-lbl">CLIENTS SERVED</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">30+</div>
+    <div class="stat-lbl">MARKETS COVERED</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">98%</div>
+    <div class="stat-lbl">CLIENT RETENTION</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-left">
+      <div class="section-eyebrow">ABOUT US</div>
+      <h2 class="section-title">Your trusted<br><em>global</em> partner</h2>
+      <div class="gold-line"></div>
+      <p class="section-sub">Founded on the principles of integrity, precision, and partnership — Fourtrade Global Solutions delivers expert advisory services to businesses operating across international markets.</p>
+    </div>
+    <div class="about-right">
+      <p>We are a Sharjah-based consulting firm with deep expertise in strategy, operations, and risk management. Our team brings decades of combined experience across diverse industries and geographies.</p>
+      <p>Whether you're entering a new market, restructuring operations, or navigating regulatory complexity, we provide the insight and frameworks that drive confident decision-making.</p>
+      <div class="about-values">
+        <div class="value-item">
+          <div class="v-title">Integrity</div>
+          <div class="v-desc">Transparent, ethical counsel at every stage</div>
+        </div>
+        <div class="value-item">
+          <div class="v-title">Precision</div>
+          <div class="v-desc">Data-driven analysis, no guesswork</div>
+        </div>
+        <div class="value-item">
+          <div class="v-title">Partnership</div>
+          <div class="v-desc">Long-term relationships, not transactions</div>
+        </div>
+        <div class="value-item">
+          <div class="v-title">Global Reach</div>
+          <div class="v-desc">Local expertise, international perspective</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header">
+    <div>
+      <div class="section-eyebrow">WHAT WE DO</div>
+      <h2 class="section-title">Our <em>core</em> services</h2>
+    </div>
+    <p style="font-size:14px;color:var(--text-light);font-weight:300;max-width:300px;text-align:right">Tailored solutions across the full spectrum of business consulting needs.</p>
+  </div>
+  <div class="services-grid">
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 40 40" fill="none">
+        <rect x="4" y="28" width="6" height="8" fill="#C49A0A" opacity="0.4"/>
+        <rect x="14" y="20" width="6" height="16" fill="#C49A0A" opacity="0.6"/>
+        <rect x="24" y="12" width="6" height="24" fill="#C49A0A" opacity="0.8"/>
+        <rect x="34" y="4" width="6" height="32" fill="#C49A0A"/>
+        <path d="M7 26 L17 18 L27 10 L37 2" stroke="#E8B824" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <div class="service-num">01</div>
+      <div class="service-title">Strategic Advisory</div>
+      <div class="service-desc">Market entry strategies, competitive positioning, and long-term growth planning for businesses expanding locally and globally.</div>
+      <div class="service-link">Learn more →</div>
+    </div>
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="14" stroke="#C49A0A" stroke-width="0.8"/>
+        <circle cx="20" cy="20" r="7" stroke="#C49A0A" stroke-width="0.8"/>
+        <circle cx="20" cy="20" r="2" fill="#E8B824"/>
+        <line x1="6" y1="20" x2="13" y2="20" stroke="#C49A0A" stroke-width="0.8"/>
+        <line x1="27" y1="20" x2="34" y2="20" stroke="#C49A0A" stroke-width="0.8"/>
+        <line x1="20" y1="6" x2="20" y2="13" stroke="#C49A0A" stroke-width="0.8"/>
+        <line x1="20" y1="27" x2="20" y2="34" stroke="#C49A0A" stroke-width="0.8"/>
+      </svg>
+      <div class="service-num">02</div>
+      <div class="service-title">Operations Consulting</div>
+      <div class="service-desc">Process optimization, workflow redesign, and operational efficiency programs that reduce costs and accelerate delivery.</div>
+      <div class="service-link">Learn more →</div>
+    </div>
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 40 40" fill="none">
+        <rect x="4" y="8" width="32" height="24" rx="2" stroke="#C49A0A" stroke-width="0.8"/>
+        <path d="M4 14 L36 14" stroke="#C49A0A" stroke-width="0.8"/>
+        <rect x="8" y="18" width="10" height="2" rx="1" fill="#C49A0A" opacity="0.6"/>
+        <rect x="8" y="23" width="16" height="2" rx="1" fill="#C49A0A" opacity="0.4"/>
+        <circle cx="30" cy="24" r="5" fill="none" stroke="#E8B824" stroke-width="1"/>
+        <path d="M28 24 L30 26 L33 22" stroke="#E8B824" stroke-width="1" stroke-linecap="round"/>
+      </svg>
+      <div class="service-num">03</div>
+      <div class="service-title">Risk Management</div>
+      <div class="service-desc">Comprehensive risk assessment, regulatory compliance advisory, and mitigation frameworks for complex operating environments.</div>
+      <div class="service-link">Learn more →</div>
+    </div>
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 40 40" fill="none">
+        <circle cx="14" cy="14" r="8" stroke="#C49A0A" stroke-width="0.8"/>
+        <circle cx="26" cy="26" r="8" stroke="#C49A0A" stroke-width="0.8"/>
+        <path d="M14 6 L14 22 M6 14 L22 14" stroke="#C49A0A" stroke-width="0.6" opacity="0.5"/>
+        <path d="M26 18 L26 34 M18 26 L34 26" stroke="#E8B824" stroke-width="0.6" opacity="0.5"/>
+      </svg>
+      <div class="service-num">04</div>
+      <div class="service-title">Market Research</div>
+      <div class="service-desc">In-depth industry analysis, consumer insights, and competitive intelligence to inform strategic decisions with confidence.</div>
+      <div class="service-link">Learn more →</div>
+    </div>
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 40 40" fill="none">
+        <rect x="8" y="4" width="24" height="32" rx="2" stroke="#C49A0A" stroke-width="0.8"/>
+        <line x1="12" y1="12" x2="28" y2="12" stroke="#C49A0A" stroke-width="0.8"/>
+        <line x1="12" y1="17" x2="28" y2="17" stroke="#C49A0A" stroke-width="0.6" opacity="0.6"/>
+        <line x1="12" y1="22" x2="22" y2="22" stroke="#C49A0A" stroke-width="0.6" opacity="0.4"/>
+        <circle cx="28" cy="30" r="5" fill="#0B1F45" stroke="#E8B824" stroke-width="1"/>
+        <path d="M26 30 L28 32 L31 28" stroke="#E8B824" stroke-width="1" stroke-linecap="round"/>
+      </svg>
+      <div class="service-num">05</div>
+      <div class="service-title">Business Development</div>
+      <div class="service-desc">Partnership identification, deal structuring, and go-to-market execution that opens new revenue streams and market share.</div>
+      <div class="service-link">Learn more →</div>
+    </div>
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="16" r="8" stroke="#C49A0A" stroke-width="0.8"/>
+        <path d="M8 36 C8 28 32 28 32 36" stroke="#C49A0A" stroke-width="0.8" fill="none"/>
+        <circle cx="20" cy="16" r="3" fill="#E8B824" opacity="0.7"/>
+      </svg>
+      <div class="service-num">06</div>
+      <div class="service-title">Executive Training</div>
+      <div class="service-desc">Leadership development, organizational capability building, and tailored training programs for management teams.</div>
+      <div class="service-link">Learn more →</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why" id="why">
+  <div class="why-inner">
+    <div>
+      <div class="section-eyebrow">WHY FOURTRADE</div>
+      <h2 class="section-title">Clarity.<br><em>Confidence.</em><br>Counsel.</h2>
+      <p class="section-sub" style="margin-top:20px">We don't just advise — we partner with you through implementation, accountability, and measurable results.</p>
+      <div class="why-points" style="margin-top:44px">
+        <div class="why-point">
+          <div class="why-point-num">01</div>
+          <div class="why-point-body">
+            <h4>Senior-led engagements</h4>
+            <p>Every mandate is led by a senior consultant — no handoffs to junior staff.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="why-point-num">02</div>
+          <div class="why-point-body">
+            <h4>UAE & GCC expertise</h4>
+            <p>Deep local knowledge combined with international consulting standards.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="why-point-num">03</div>
+          <div class="why-point-body">
+            <h4>Execution focused</h4>
+            <p>Strategies that are built to be implemented, not just presented.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="why-point-num">04</div>
+          <div class="why-point-body">
+            <h4>Measurable outcomes</h4>
+            <p>Every engagement is tied to clear KPIs and client-defined success metrics.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="why-visual">
+        <div class="why-quote">"Fourtrade brought the clarity we needed to make a decisive strategic move — and the execution support to see it through."</div>
+        <div class="why-quote-attr">— CHIEF EXECUTIVE, REGIONAL TRADING GROUP</div>
+      </div>
+      <div class="why-visual" style="margin-top:1px">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:0.5px solid rgba(196,154,10,0.15)">
+            <span style="font-size:13px;color:var(--text-light)">Strategy projects delivered</span>
+            <span style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold)">148</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:0.5px solid rgba(196,154,10,0.15)">
+            <span style="font-size:13px;color:var(--text-light)">Industries served</span>
+            <span style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold)">22+</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:13px;color:var(--text-light)">Average client tenure</span>
+            <span style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold)">4.2 yrs</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div style="text-align:center;max-width:500px;margin:0 auto 0">
+    <div class="section-eyebrow" style="justify-content:center">OUR APPROACH</div>
+    <h2 class="section-title">How we <em>work</em></h2>
+    <p class="section-sub" style="margin:16px auto 0;text-align:center">A structured, transparent engagement model that delivers results at every stage.</p>
+  </div>
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="step-dot">1</div>
+      <div class="step-title">Discovery</div>
+      <div class="step-desc">We begin with a deep diagnostic — understanding your business, challenges, and objectives through structured interviews and data review.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-dot">2</div>
+      <div class="step-title">Analysis</div>
+      <div class="step-desc">Our team synthesizes findings into a clear picture of your competitive position, operational gaps, and strategic opportunities.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-dot">3</div>
+      <div class="step-title">Strategy</div>
+      <div class="step-desc">We develop a tailored roadmap with clear priorities, timelines, and measurable KPIs — built for your specific context.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-dot">4</div>
+      <div class="step-title">Execution</div>
+      <div class="step-desc">We stay engaged through implementation — tracking progress, adjusting to change, and ensuring the strategy delivers results.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div>
+      <div class="section-eyebrow">GET IN TOUCH</div>
+      <h2 class="section-title">Let's build<br>something <em>together</em></h2>
+      <p class="section-sub" style="margin-top:20px">Whether you have a defined mandate or an emerging challenge, we welcome the conversation.</p>
+      <div class="contact-info" style="margin-top:48px">
+        <div class="contact-item">
+          <div class="contact-item-label">OFFICE</div>
+          <div class="contact-item-value">Sharjah, United Arab Emirates</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">EMAIL</div>
+          <div class="contact-item-value">info@fourtrade.com</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">PHONE</div>
+          <div class="contact-item-value">+971 XX XXX XXXX</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">WORKING HOURS</div>
+          <div class="contact-item-value">Sunday – Thursday, 9am – 6pm GST</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>FULL NAME</label>
+            <input type="text" placeholder="Your name">
+          </div>
+          <div class="form-group">
+            <label>COMPANY</label>
+            <input type="text" placeholder="Your company">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>EMAIL ADDRESS</label>
+          <input type="email" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label>SERVICE OF INTEREST</label>
+          <select>
+            <option value="">Select a service</option>
+            <option>Strategic Advisory</option>
+            <option>Operations Consulting</option>
+            <option>Risk Management</option>
+            <option>Market Research</option>
+            <option>Business Development</option>
+            <option>Executive Training</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>YOUR MESSAGE</label>
+          <textarea placeholder="Tell us about your challenge or objective…"></textarea>
+        </div>
+        <button class="submit-btn">SEND MESSAGE</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:12px">
+        <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
+          <rect x="2" y="2" width="32" height="32" rx="2" stroke="#C49A0A" stroke-width="0.8"/>
+          <line x1="2" y1="18" x2="34" y2="18" stroke="#C49A0A" stroke-width="0.6"/>
+          <line x1="18" y1="2" x2="18" y2="34" stroke="#C49A0A" stroke-width="0.6"/>
+          <ellipse cx="18" cy="18" rx="9" ry="16" stroke="#C49A0A" stroke-width="0.8"/>
+        </svg>
+        <div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:#fff;letter-spacing:1.5px">FOURTRADE</div>
+          <div style="font-size:8px;letter-spacing:3px;color:#C49A0A">GLOBAL SOLUTIONS</div>
+        </div>
+      </div>
+      <p>Strategic consulting and advisory services for businesses navigating a complex, interconnected world.</p>
+    </div>
+    <div class="footer-col">
+      <h5>SERVICES</h5>
+      <a href="#services">Strategic Advisory</a>
+      <a href="#services">Operations Consulting</a>
+      <a href="#services">Risk Management</a>
+      <a href="#services">Market Research</a>
+      <a href="#services">Business Development</a>
+    </div>
+    <div class="footer-col">
+      <h5>COMPANY</h5>
+      <a href="#about">About Us</a>
+      <a href="#why">Why Fourtrade</a>
+      <a href="#process">Our Process</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h5>CONTACT</h5>
+      <a href="#">info@fourtrade.com</a>
+      <a href="#">+971 XX XXX XXXX</a>
+      <a href="#">Sharjah, UAE</a>
+      <a href="#">LinkedIn</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Fourtrade Global Solutions. All rights reserved.</p>
+    <div class="footer-tagline">Clarity. Confidence. Counsel.</div>
+  </div>
+</footer>
+
+</body>
+</html>
